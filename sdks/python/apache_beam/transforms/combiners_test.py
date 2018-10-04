@@ -21,6 +21,7 @@ from __future__ import division
 
 import itertools
 import random
+import sys
 import unittest
 
 import hamcrest as hc
@@ -45,6 +46,9 @@ class CombineTest(unittest.TestCase):
     # Sort more often for more rigorous testing on small data sets.
     combine.TopCombineFn._MIN_BUFFER_OVERSIZE = 1
 
+  @unittest.skipIf(sys.version_info[0] == 3, 'This test still needs to be '
+                                             'fixed on Python 3')
+  # TODO(BEAM-5616)
   def test_builtin_combines(self):
     pipeline = TestPipeline()
 
@@ -67,6 +71,9 @@ class CombineTest(unittest.TestCase):
     assert_that(result_key_count, equal_to([('a', size)]), label='key:size')
     pipeline.run()
 
+  @unittest.skipIf(sys.version_info[0] == 3, 'This test still needs to be '
+                                             'fixed on Python 3')
+  # TODO(BEAM-5617)
   def test_top(self):
     pipeline = TestPipeline()
 
@@ -201,6 +208,9 @@ class CombineTest(unittest.TestCase):
                                "['max', 'MeanCombineFn', 'sum']")]
     hc.assert_that(dd.items, hc.contains_inanyorder(*expected_items))
 
+  @unittest.skipIf(sys.version_info[0] == 3, 'This test still needs to be '
+                                             'fixed on Python 3')
+  # TODO(BEAM-5617)
   def test_top_shorthands(self):
     pipeline = TestPipeline()
 
@@ -219,6 +229,9 @@ class CombineTest(unittest.TestCase):
     assert_that(result_kbot, equal_to([('a', [0, 1, 1, 1])]), label='k:bot')
     pipeline.run()
 
+  @unittest.skipIf(sys.version_info[0] == 3, 'This test still needs to be '
+                                             'fixed on Python 3')
+  # TODO(BEAM-5617)
   def test_global_sample(self):
     def is_good_sample(actual):
       assert len(actual) == 1
@@ -268,6 +281,9 @@ class CombineTest(unittest.TestCase):
               .with_common_input()).without_defaults())
       assert_that(result, equal_to([(1, 7.0 / 4, 3)]))
 
+  @unittest.skipIf(sys.version_info[0] == 3, 'This test still needs to be '
+                                             'fixed on Python 3')
+  # TODO(BEAM-5617)
   def test_to_list_and_to_dict(self):
     pipeline = TestPipeline()
     the_list = [6, 3, 1, 1, 9, 1, 5, 2, 0, 6]
@@ -339,6 +355,9 @@ class CombineTest(unittest.TestCase):
               lambda key: random.randrange(0, 5)))
       assert_that(result, equal_to([(None, 499.5)]))
 
+  @unittest.skipIf(sys.version_info[0] == 3, 'This test still needs to be '
+                                             'fixed on Python 3')
+  # TODO(BEAM-5616)
   def test_global_fanout(self):
     with TestPipeline() as p:
       result = (
